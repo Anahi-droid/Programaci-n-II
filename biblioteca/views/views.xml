@@ -90,10 +90,51 @@
           <field name="multa_boleana"/>
           <field name="multa"/>
           <field name="estado"/>
+<<<<<<< HEAD
+=======
         </list>
       </field>
     </record>
 
+    <record model="ir.ui.view" id="biblioteca_prestamo_form">
+      <field name="name">biblioteca.prestamo.form</field>
+      <field name="model">biblioteca.prestamo</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <group>
+              <field name="name"/>
+              <field name="fecha_prestamo"/>
+              <field name="fecha_devolucion"/>
+              <field name="libro_id"/>
+              <field name="usuario_id"/>
+              <field name="multa_boleana"/>
+              <field name="multa"/>
+              <field name="estado"/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+
+    <!-- MULTAS -->
+    <record model="ir.ui.view" id="biblioteca_multa_list">
+      <field name="name">biblioteca.multa.list</field>
+      <field name="model">biblioteca.multa</field>
+      <field name="arch" type="xml">
+        <list>
+          <field name="name_multa"/>
+          <field name="multa"/>
+          <field name="valor_multa"/>
+          <field name="fecha_multa"/>
+          <field name="prestamo"/>
+>>>>>>> 65091b4b956bbe92c93d946eb1242088b3e19cb0
+        </list>
+      </field>
+    </record>
+
+<<<<<<< HEAD
     <record model="ir.ui.view" id="biblioteca_prestamo_form">
       <field name="name">biblioteca.prestamo.form</field>
       <field name="model">biblioteca.prestamo</field>
@@ -134,6 +175,8 @@
       </field>
     </record>
 
+=======
+>>>>>>> 65091b4b956bbe92c93d946eb1242088b3e19cb0
     <record model="ir.ui.view" id="biblioteca_multa_form">
       <field name="name">biblioteca.multa.form</field>
       <field name="model">biblioteca.multa</field>

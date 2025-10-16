@@ -49,6 +49,7 @@ class BibliotecaPrestamo(models.Model):
     _name = 'biblioteca.prestamo'
     _description = 'Registro de préstamos'
     
+
     name = fields.Char(string='Préstamo', required=True)
     fecha_prestamo = fields.Datetime(default=datetime.now())
     libro_id = fields.Many2one('biblioteca.libro', string='Libro')
@@ -58,12 +59,22 @@ class BibliotecaPrestamo(models.Model):
     multa = fields.Float(string='Multa', default=0.0)
     fecha_maxima = fields.Datetime(compute='_compute_fecha_devolucion')
     usuario = fields.Many2one('res.users', string='Usuario presta',default = lambda self: self.env.uid)
+
+    name = fields.Char(string='Código del Préstamo')
+    fecha_prestamo = fields.Datetime(string='Fecha del Préstamo')
+    libro_id = fields.Many2one('biblioteca.libro', string='Libro')
+    usuario_id = fields.Many2one('biblioteca.usuarios', string='Usuario')
+    fecha_devolucion = fields.Datetime(string='Fecha de Devolución')
+    multa_booleana = fields.Boolean(string='Tiene Multa', default=False)
+    multa = fields.Float(string='Multa', default=0.0)
+
     estado = fields.Selection([
         ('p', 'Prestado'),
         ('d', 'Devuelto'),
         ('r', 'Retrasado'),
         ('m', 'Multa')
     ], string='Estado', default='p')
+
     
     @api.depends('fecha_maxima' , 'fecha_prestamo')
     def _compute_fecha_devolucion(self):
@@ -79,6 +90,7 @@ class BibliotecaPrestamo(models.Model):
         print("Generando Préstamo")
         self.write({'estado': 'p'})
 
+
 class BibliotecaMulta(models.Model):
     _name = 'biblioteca.multa'
     _description = 'Registro de multas'
@@ -90,20 +102,28 @@ class BibliotecaMulta(models.Model):
     fecha_multa = fields.Date(string='Fecha de la Multa')
     prestamo = fields.Many2one('biblioteca.prestamo', string='Préstamo')
 
+
 class BibliotecaUsuarios(models.Model):
     _name = 'biblioteca.usuarios'
     _description = 'Registro de usuarios'
     _rec_name = 'firstname'
     
+
     firstname = fields.Char(string='Nombres', required=True)
     lastname = fields.Char(string='Apellidos', required=True)
     identificacion = fields.Char(string='Identificación', required=True)
+
+    firstname = fields.Char(string='Nombres')
+    lastname = fields.Char(string='Apellidos')
+    identificacion = fields.Char(string='Identificación')
+
     telefono = fields.Char(string='Teléfono')
     email = fields.Char(string='Correo Electrónico')
     direccion = fields.Text(string='Dirección')
     fecha_nacimiento = fields.Date(string='Fecha de Nacimiento')
     activo = fields.Boolean(string='Activo', default=True)
     prestamos = fields.One2many('biblioteca.prestamo', 'usuario_id', string='Préstamos')
+
 
     @api.constrains('identificacion')
     def _check_identificacion(self):
@@ -115,6 +135,8 @@ class BibliotecaUsuarios(models.Model):
                 raise ValidationError("La cédula solo debe contener números.")
             if len(cedula) != 10:
                 raise ValidationError("La cédula debe tener exactamente 10 dígitos.")
+
+
 
 
 
