@@ -15,10 +15,10 @@ class BibliotecaLibro(models.Model):
     publicacion = fields.Char(string='Año Publicacion')
     ejemplares = fields.Integer(string='Numero ejemplares')
     costo = fields.Char(string='Costo')
-    description = fields.Text(string='Descripcion libro')
     isbn = fields.Char(string='ISBN')
-    categoria = fields. Char(string='Categoria')
-    ubicacion = fields. Char(string='Ubicacion Fisica')
+    categoria = fields.Char(string='Categoria')
+    ubicacion = fields.Char(string='Ubicacion Fisica')
+    description = fields.Text(string='Descripcion libro')
 
 
 class BibliotecaAutor(models.Model):
@@ -49,25 +49,13 @@ class BibliotecaPrestamo(models.Model):
     _name = 'biblioteca.prestamo'
     _description = 'Registro de préstamos'
     
-
     name = fields.Char(string='Préstamo', required=True)
     fecha_prestamo = fields.Datetime(default=datetime.now())
+    fecha_devolucion = fields.Datetime(string='Fecha de Devolución')
     libro_id = fields.Many2one('biblioteca.libro', string='Libro')
     usuario_id = fields.Many2one('biblioteca.usuarios', string='Usuario')
-    fecha_devolucion = fields.Datetime(string='Fecha de Devolución')
-    multa_boleana = fields.Boolean(string='Tiene Multa', default=False)
-    multa = fields.Float(string='Multa', default=0.0)
     fecha_maxima = fields.Datetime(compute='_compute_fecha_devolucion')
     usuario = fields.Many2one('res.users', string='Usuario presta',default = lambda self: self.env.uid)
-
-    name = fields.Char(string='Código del Préstamo')
-    fecha_prestamo = fields.Datetime(string='Fecha del Préstamo')
-    libro_id = fields.Many2one('biblioteca.libro', string='Libro')
-    usuario_id = fields.Many2one('biblioteca.usuarios', string='Usuario')
-    fecha_devolucion = fields.Datetime(string='Fecha de Devolución')
-    multa_booleana = fields.Boolean(string='Tiene Multa', default=False)
-    multa = fields.Float(string='Multa', default=0.0)
-
     estado = fields.Selection([
         ('p', 'Prestado'),
         ('d', 'Devuelto'),
@@ -97,11 +85,11 @@ class BibliotecaMulta(models.Model):
     _rec_name = 'name_multa'
     
     name_multa = fields.Char(string='Código de la Multa')
-    multa = fields.Char(string='Información de la Multa')
+    multa = multa = fields.Float(string='Multa', default=0.0)
     valor_multa = fields.Float(string='Valor de la Multa')
     fecha_multa = fields.Date(string='Fecha de la Multa')
     prestamo = fields.Many2one('biblioteca.prestamo', string='Préstamo')
-
+    multa_boleana = fields.Boolean(string='Tiene Multa', default=False)
 
 class BibliotecaUsuarios(models.Model):
     _name = 'biblioteca.usuarios'
@@ -112,11 +100,6 @@ class BibliotecaUsuarios(models.Model):
     firstname = fields.Char(string='Nombres', required=True)
     lastname = fields.Char(string='Apellidos', required=True)
     identificacion = fields.Char(string='Identificación', required=True)
-
-    firstname = fields.Char(string='Nombres')
-    lastname = fields.Char(string='Apellidos')
-    identificacion = fields.Char(string='Identificación')
-
     telefono = fields.Char(string='Teléfono')
     email = fields.Char(string='Correo Electrónico')
     direccion = fields.Text(string='Dirección')

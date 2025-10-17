@@ -11,8 +11,12 @@
           <field name="firstname"/>
           <field name="author"/>
           <field name="publicacion"/>
+          <field name="ejemplares"/>
+          <field name="costo"/>
+          <field name="isbn"/>
           <field name="categoria"/>
           <field name="ubicacion"/>
+          <field name="description"/>
         </list>
       </field>
     </record>
@@ -24,16 +28,16 @@
         <form>
           <sheet>
             <group>
-              <field name="codigo_libro"/>
-              <field name="firstname"/>
-              <field name="author"/>
-              <field name="publicacion"/>
-              <field name="ejemplares"/>
-              <field name="costo"/>
-              <field name="isbn"/>
-              <field name="categoria"/>
-              <field name="ubicacion"/>
-              <field name="description"/>
+              <field name="codigo_libro" readonly="1"/>
+              <field name="firstname" readonly="1"/>
+              <field name="author" readonly="1"/>
+              <field name="publicacion" readonly="1"/>
+              <field name="ejemplares" readonly="1"/>
+              <field name="costo" readonly="1"/>
+              <field name="isbn" readonly="1"/>
+              <field name="categoria" readonly="1"/>
+              <field name="ubicacion" readonly="1"/>
+              <field name="description" readonly="1"/>
             </group>
           </sheet>
         </form>
@@ -50,6 +54,7 @@
           <field name="firstname"/>
           <field name="lastname"/>
           <field name="nacimiento"/>
+          <field name="libros"/>
         </list>
       </field>
     </record>
@@ -59,18 +64,17 @@
       <field name="model">biblioteca.autor</field>
       <field name="arch" type="xml">
         <form>
-          <sheet>
             <group>
-              <field name="firstname"/>
-              <field name="lastname"/>
-              <field name="nacimiento"/>
+              <field name="firstname" readonly="1"/>
+              <field name="lastname" readonly="1"/>
+              <field name="nacimiento" readonly="1"/>
+              <field name="libros" readonly="1"/>
             </group>
             <notebook>
               <page string="Libros Publicados">
                 <field name="libros"/>
               </page>
             </notebook>
-          </sheet>
         </form>
       </field>
     </record>
@@ -87,11 +91,9 @@
           <field name="fecha_devolucion"/>
           <field name="libro_id"/>
           <field name="usuario_id"/>
-          <field name="multa_boleana"/>
-          <field name="multa"/>
+          <field name="fecha_maxima"/>
+          <field name="usuario"/>
           <field name="estado"/>
-<<<<<<< HEAD
-=======
         </list>
       </field>
     </record>
@@ -101,21 +103,21 @@
       <field name="model">biblioteca.prestamo</field>
       <field name="arch" type="xml">
         <form>
-          <sheet>
-            <group>
-              <field name="name"/>
-              <field name="fecha_prestamo"/>
-              <field name="fecha_devolucion"/>
-              <field name="libro_id"/>
-              <field name="usuario_id"/>
-              <field name="multa_boleana"/>
-              <field name="multa"/>
-              <field name="estado"/>
-            </group>
-          </sheet>
+          <group>
+            <label for="name" string="Código de préstamo"/>
+            <field name="name" readonly="1" nolabel="1"/>
+            <field name="fecha_prestamo" readonly="1"/>
+            <field name="fecha_devolucion" required="0"/>
+            <field name="libro_id" readonly="1"/>
+            <field name="usuario_id" readonly="1"/>
+            <field name="estado" readonly="1"/>
+            <field name="fecha_maxima" readonly="1"/>
+            <field name="usuario" readonly="1"/>
+          </group>
         </form>
       </field>
     </record>
+
 
 
     <!-- MULTAS -->
@@ -129,54 +131,12 @@
           <field name="valor_multa"/>
           <field name="fecha_multa"/>
           <field name="prestamo"/>
->>>>>>> 65091b4b956bbe92c93d946eb1242088b3e19cb0
+          <field name="multa_boleana"/>
         </list>
       </field>
     </record>
 
-<<<<<<< HEAD
-    <record model="ir.ui.view" id="biblioteca_prestamo_form">
-      <field name="name">biblioteca.prestamo.form</field>
-      <field name="model">biblioteca.prestamo</field>
-      <field name="arch" type="xml">
-        <form>
-          <sheet>
-            <group>
-              <label for="name"string="Código de préstamo">
-              <field name="name" readonly="estado in ('p','d','m')" nolabel="1"/>
-              <field name="fecha_prestamo" readonly="estado in ('p','d','m')"/>
-              <field name="fecha_devolucion"  readonly="estado in ('p','d','m')" required="0"/>
-              <field name="libro_id" readonly="estado in ('p','d','m')"/>
-              <field name="usuario_id" readonly="estado in ('p','d','m')"/>
-              <field name="multa_boleana" readonly="estado in ('p','d','m')"/>
-              <field name="multa" readonly="estado in ('p','d','m')" invisible="multa_boleana == False"/>
-              <field name="estado" readonly="estado in ('p','d','m')"/>
-              <field name="fecha_maxima" readonly="estado in ('p','d','m')"/>
-              <field name="usuario" readonly="estado in ('p','d','m')"/>
-            </group>
-          </sheet>
-        </form>
-      </field>
-    </record>
 
-
-    <!-- MULTAS -->
-    <record model="ir.ui.view" id="biblioteca_multa_list">
-      <field name="name">biblioteca.multa.list</field>
-      <field name="model">biblioteca.multa</field>
-      <field name="arch" type="xml">
-        <list>
-          <field name="name_multa"/>
-          <field name="multa"/>
-          <field name="valor_multa"/>
-          <field name="fecha_multa"/>
-          <field name="prestamo"/>
-        </list>
-      </field>
-    </record>
-
-=======
->>>>>>> 65091b4b956bbe92c93d946eb1242088b3e19cb0
     <record model="ir.ui.view" id="biblioteca_multa_form">
       <field name="name">biblioteca.multa.form</field>
       <field name="model">biblioteca.multa</field>
@@ -184,11 +144,12 @@
         <form>
           <sheet>
             <group>
-              <field name="name_multa"/>
-              <field name="multa"/>
-              <field name="valor_multa"/>
-              <field name="fecha_multa"/>
-              <field name="prestamo"/>
+              <field name="name_multa" readonly="1"/>
+              <field name="multa" invisible="multa_boleana == False"/>
+              <field name="valor_multa" readonly="1"/>
+              <field name="fecha_multa" readonly="1"/>
+              <field name="prestamo" readonly="1"/>
+              <field name="multa_boleana" readonly="1"/>
             </group>
           </sheet>
         </form>
@@ -207,7 +168,10 @@
           <field name="identificacion"/>
           <field name="telefono"/>
           <field name="email"/>
+          <field name="direccion"/>
+          <field name="fecha_nacimiento"/>
           <field name="activo"/>
+          <field name="prestamos"/>
         </list>
       </field>
     </record>
@@ -219,18 +183,18 @@
         <form>
           <sheet>
             <group>
-              <field name="firstname"/>
-              <field name="lastname"/>
-              <field name="identificacion"/>
-              <field name="telefono"/>
-              <field name="email"/>
-              <field name="direccion"/>
-              <field name="fecha_nacimiento"/>
-              <field name="activo"/>
+              <field name="firstname" readonly="1"/>
+              <field name="lastname" readonly="1"/>
+              <field name="identificacion" readonly="1"/>
+              <field name="telefono" readonly="1"/>
+              <field name="email" readonly="1"/>
+              <field name="direccion" readonly="1"/>
+              <field name="fecha_nacimiento" readonly="1"/>
+              <field name="activo" readonly="1"/>
             </group>
             <notebook>
-              <page string="Préstamos">
-                <field name="prestamos"/>
+              <page string="Préstamos" readonly="1">
+                <field name="prestamos" readonly="1"/>
               </page>
             </notebook>
           </sheet>
