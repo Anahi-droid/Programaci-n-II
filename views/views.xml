@@ -38,7 +38,7 @@
             
             <separator string="Importar desde OpenLibrary"/>
             <group>
-              <button name="importar_desde_openlibrary" type="object" string="Buscar e Importar" class="btn-primary"/>
+              <button name="importar_desde_openlibrary" type="object" string="Buscar" class="btn-primary"/>
             </group>
           </sheet>
         </form>
