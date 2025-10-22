@@ -142,12 +142,12 @@
         <form>
           <sheet>
             <group>
-              <field name="name_multa" readonly="1"/>
+              <field name="name_multa"/>
               <field name="multa" invisible="multa_boleana == False"/>
-              <field name="valor_multa" readonly="1"/>
-              <field name="fecha_multa" readonly="1"/>
-              <field name="prestamo" readonly="1"/>
-              <field name="multa_boleana" readonly="1"/>
+              <field name="valor_multa"/>
+              <field name="fecha_multa"/>
+              <field name="prestamo"/>
+              <field name="multa_boleana"/>
             </group>
           </sheet>
         </form>

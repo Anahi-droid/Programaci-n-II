@@ -34,11 +34,11 @@ class BibliotecaLibro(models.Model):
 
             data = response.json()
 
-            # Título y año de publicación
+    
             record.firstname = data.get('title') or record.firstname
             record.publicacion = data.get('publish_date') or record.publicacion
 
-            # Autor
+            
             if data.get('authors'):
                 autor_key = data['authors'][0].get('key', '').replace('/authors/', '')
                 try:
@@ -47,12 +47,11 @@ class BibliotecaLibro(models.Model):
                 except:
                     nombre_completo = autor_key
 
-                # Separar firstname y lastname
+                
                 partes = nombre_completo.split()
                 firstname = " ".join(partes[:-1]) if len(partes) > 1 else nombre_completo
                 lastname = partes[-1] if len(partes) > 1 else ""
-
-                # Buscar o crear autor
+              
                 autor_obj = self.env['biblioteca.autor'].search([
                     ('firstname', '=', firstname),
                     ('lastname', '=', lastname)
@@ -65,8 +64,7 @@ class BibliotecaLibro(models.Model):
                     })
 
                 record.author = autor_obj.id
-
-            # Descripción
+           
             desc = data.get('description')
             if isinstance(desc, dict):
                 desc = desc.get('value')
@@ -111,7 +109,7 @@ class BibliotecaPrestamo(models.Model):
     libro_id = fields.Many2one('biblioteca.libro', string='Libro')
     fecha_prestamo = fields.Datetime(default=datetime.now())
     fecha_devolucion = fields.Datetime(string='Fecha de Devolución')
-    fecha_maxima = fields.Datetime(compute='_compute_fecha_devolucion')
+    fecha_maxima = fields.Datetime(compute='_compute_fecha_devolucion', store=True)
     usuario_encargado = fields.Many2one('res.users', string='Encargado',default = lambda self: self.env.uid)
     estado = fields.Selection([
         ('p', 'Prestado'),
@@ -120,6 +118,19 @@ class BibliotecaPrestamo(models.Model):
         ('m', 'Multa')
     ], string='Estado', default='p')
 
+    def _cron_multas(self):
+        prestamos = self.env['biblioteca.prestamo'].search([('estado','=', 'p'),('fecha_maxima', '<', datetime.now())])
+        for prestamo in prestamos:
+            prestamo.write({'estado': 'm',
+                            'multa_boleana': True,
+                            'multa': 1.0})
+        prestamos = self.env['biblioteca.prestamo'].search([('estado','=', 'm')])
+        for prestamo in prestamos:
+            days = (datetime.now() - prestamo.fecha_maxima).days
+            prestamo.write({'multa': days, })
+            
+            
+    
     
     @api.depends('fecha_maxima' , 'fecha_prestamo')
     def _compute_fecha_devolucion(self):
